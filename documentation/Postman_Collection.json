@@ -1,0 +1,290 @@
+{
+	"info": {
+		"_postman_id": "emergency-response-api-collection",
+		"name": "Emergency Response API",
+		"description": "Complete API collection for Emergency Response System.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "emergency-response"
+	},
+	"item": [
+		{
+			"name": "Responders",
+			"item": [
+				{
+					"name": "Get All Responders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/responders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"responders"
+							]
+						},
+						"description": "Retrieve all responders in the system"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Responder by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/responders/{{responderId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"responders",
+								"{{responderId}}"
+							]
+						},
+						"description": "Retrieve a specific responder by their ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Responder Location",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/responders/{{responderId}}/location?lat={{lat}}&lng={{lng}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"responders",
+								"{{responderId}}",
+								"location"
+							],
+							"query": [
+								{
+									"key": "lat",
+									"value": "{{lat}}",
+									"description": "Latitude coordinate"
+								},
+								{
+									"key": "lng",
+									"value": "{{lng}}",
+									"description": "Longitude coordinate"
+								}
+							]
+						},
+						"description": "Update the location of a responder"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing responders"
+		},
+		{
+			"name": "Alerts",
+			"item": [
+				{
+					"name": "Create Emergency Report",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"FIRE\",\n  \"description\": \"Building fire on Main Street\",\n  \"locationLat\": 40.7128,\n  \"locationLng\": -74.0060,\n  \"reporterId\": \"user123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/alerts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts"
+							]
+						},
+						"description": "Create a new emergency report/alert"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Emergency Report by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/{{alertId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"{{alertId}}"
+							]
+						},
+						"description": "Retrieve a specific emergency report by its ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reports by Reporter ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/reporter/{{reporterId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"reporter",
+								"{{reporterId}}"
+							]
+						},
+						"description": "Retrieve all emergency reports created by a specific reporter"
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Responder to Alert",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/{{alertId}}/assign",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"{{alertId}}",
+								"assign"
+							]
+						},
+						"description": "Assign a responder to an emergency alert"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing emergency alerts and reports"
+		},
+		{
+			"name": "Assignments",
+			"item": [
+				{
+					"name": "Create Assignment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/assign?emergencyId={{emergencyId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"assign"
+							],
+							"query": [
+								{
+									"key": "emergencyId",
+									"value": "{{emergencyId}}",
+									"description": "ID of the emergency to assign"
+								}
+							]
+						},
+						"description": "Create a new assignment for an emergency"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Assignment by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/assign/{{assignmentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"assign",
+								"{{assignmentId}}"
+							]
+						},
+						"description": "Retrieve a specific assignment by its ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Assignment by Emergency ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/assign/emergency/{{emergencyId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"assign",
+								"emergency",
+								"{{emergencyId}}"
+							]
+						},
+						"description": "Retrieve assignment for a specific emergency"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing assignments between responders and emergencies"
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "responderId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "alertId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "reporterId",
+			"value": "user123",
+			"type": "string"
+		},
+		{
+			"key": "emergencyId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "assignmentId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "lat",
+			"value": "40.7128",
+			"type": "string"
+		},
+		{
+			"key": "lng",
+			"value": "-74.0060",
+			"type": "string"
+		}
+	]
+}

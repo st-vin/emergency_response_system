@@ -1,0 +1,300 @@
+openapi: "3.1.0"
+info:
+  title: "emergency_response API"
+  description: "emergency_response API"
+  version: "1.0.0"
+servers:
+  - url: "https://emergency_response"
+paths:
+  /responders:
+    get:
+      summary: "GET responders"
+      operationId: "getAllResponders"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ResponderDTO"
+  /responders/{id}:
+    get:
+      summary: "GET responders/{id}"
+      operationId: "getResponder"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponderDTO"
+  /responders/{id}/location:
+    patch:
+      summary: "PATCH responders/{id}/location"
+      operationId: "updateLocation"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "lat"
+          in: "query"
+          required: true
+          schema:
+            type: "number"
+            format: "double"
+        - name: "lng"
+          in: "query"
+          required: true
+          schema:
+            type: "number"
+            format: "double"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponderDTO"
+  /alerts:
+    post:
+      summary: "POST alerts"
+      operationId: "createReport"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEmergencyReportDTO"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+  /alerts/reporter/{reporterId}:
+    get:
+      summary: "GET alerts/reporter/{reporterId}"
+      operationId: "getReportsByReporter"
+      parameters:
+        - name: "reporterId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/EmergencyReport"
+  /alerts/{id}:
+    get:
+      summary: "GET alerts/{id}"
+      operationId: "getReport"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/EmergencyReport"
+  /alerts/{id}/assign:
+    post:
+      summary: "POST alerts/{id}/assign"
+      operationId: "assignResponder"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/EmergencyResponseDTO"
+  /assign:
+    post:
+      summary: "POST assign"
+      operationId: "createAssignment"
+      parameters:
+        - name: "emergencyId"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AssignmentDTO"
+  /assign/emergency/{emergencyId}:
+    get:
+      summary: "GET assign/emergency/{emergencyId}"
+      operationId: "getAssignmentByEmergency"
+      parameters:
+        - name: "emergencyId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AssignmentDTO"
+  /assign/{id}:
+    get:
+      summary: "GET assign/{id}"
+      operationId: "getAssignment"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AssignmentDTO"
+components:
+  schemas:
+    ResponderDTO:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+          nullable: true
+        name:
+          type: "string"
+          nullable: true
+        role:
+          type: "string"
+          nullable: true
+        availability:
+          type: "boolean"
+          nullable: true
+    CreateEmergencyReportDTO:
+      type: "object"
+      properties:
+        type:
+          type: "string"
+          nullable: true
+        description:
+          type: "string"
+          nullable: true
+        locationLat:
+          type: "number"
+          format: "double"
+          nullable: true
+        locationLng:
+          type: "number"
+          format: "double"
+          nullable: true
+        reporterId:
+          type: "string"
+          nullable: true
+    EmergencyReport:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+          nullable: true
+        type:
+          type: "string"
+          nullable: true
+        description:
+          type: "string"
+          nullable: true
+        locationLat:
+          type: "number"
+          format: "double"
+          nullable: true
+        locationLng:
+          type: "number"
+          format: "double"
+          nullable: true
+        timestamp:
+          type: "string"
+          format: "date-time"
+          nullable: true
+        status:
+          type: "string"
+          nullable: true
+        reporterId:
+          type: "string"
+          nullable: true
+    EmergencyResponseDTO:
+      type: "object"
+      properties:
+        reportId:
+          type: "integer"
+          format: "int64"
+          nullable: true
+        responderName:
+          type: "string"
+          nullable: true
+        responderRole:
+          type: "string"
+          nullable: true
+        etaMinutes:
+          type: "integer"
+          format: "int32"
+          nullable: true
+    AssignmentDTO:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+          nullable: true
+        responderId:
+          type: "integer"
+          format: "int64"
+          nullable: true
+        emergencyId:
+          type: "integer"
+          format: "int64"
+          nullable: true
+        etaMinutes:
+          type: "integer"
+          format: "int32"
+          nullable: true
